@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hackathon</title>
+<style>
+:root{--a:#4f46e5;--bg:#f7f8fa;--c:#fff;--t:#171a21;--m:#667085;--b:#e4e7ec}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1115;--c:#1a1d25;--t:#eceef3;--m:#9aa2b1;--b:#2a2f3a}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font:17px/1.6 system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--t)}
+header{background:var(--a);color:#fff;padding:72px 20px 64px;text-align:center}
+header h1{margin:0 0 10px;font-size:clamp(32px,6vw,54px);letter-spacing:-.02em}
+header p{margin:0 auto;max-width:620px;font-size:19px;opacity:.92}
+.meta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+.meta span{background:rgba(255,255,255,.18);padding:8px 16px;border-radius:99px;font-size:15px}
+nav{position:sticky;top:0;background:var(--c);border-bottom:1px solid var(--b);display:flex;gap:4px;justify-content:center;flex-wrap:wrap;padding:8px;z-index:5}
+nav a{color:var(--m);text-decoration:none;padding:6px 12px;border-radius:8px;font-size:15px}nav a:hover{background:var(--bg);color:var(--t)}
+main{max-width:760px;margin:0 auto;padding:8px 20px 60px}
+section{margin-top:44px}h2{font-size:26px;margin:0 0 14px;letter-spacing:-.01em}
+.card{background:var(--c);border:1px solid var(--b);border-radius:12px;padding:14px 18px;margin-bottom:10px}
+.row{display:flex;gap:16px}.row b{min-width:110px;color:var(--a)}
+ul{padding-left:20px;margin:0}li{margin:6px 0}
+.tags{display:flex;gap:8px;flex-wrap:wrap}.tags span{background:var(--c);border:1px solid var(--b);padding:6px 14px;border-radius:99px;font-size:15px}
+.res a{color:var(--a);font-weight:600;text-decoration:none}.res a:hover{text-decoration:underline}.res small{display:block;color:var(--m)}
+details summary{cursor:pointer;font-weight:600}details p{margin:8px 0 0;color:var(--m)}
+footer{text-align:center;color:var(--m);padding:30px 20px;font-size:14px}footer a{color:var(--a)}
+@media(max-width:520px){.row{flex-direction:column;gap:0}}
+</style></head><body>
+<header><h1 id="titre"></h1><p id="accroche"></p><div class="meta" id="meta"></div></header>
+<nav id="nav"></nav><main id="main"></main><footer id="foot"></footer>
+<script src="config.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const e=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+document.documentElement.style.setProperty('--a',SITE.couleur);
+document.title=SITE.titre;$('titre').textContent=SITE.titre;$('accroche').textContent=SITE.accroche;
+$('meta').innerHTML=`<span>📅 ${e(SITE.date)}</span><span>📍 ${e(SITE.lieu)}</span>`;
+const S=[];const add=(id,nom,html)=>S.push({id,nom,html});
+add('presentation','Présentation',SITE.presentation.map(p=>`<p>${e(p)}</p>`).join('')+(SITE.theme?`<div class="card"><b>Thème :</b> ${e(SITE.theme)}</div>`:''));
+if(SITE.programme?.length)add('programme','Programme',SITE.programme.map(p=>`<div class="card row"><b>${e(p.heure)}</b><span>${e(p.titre)}</span></div>`).join(''));
+if(SITE.regles?.length)add('regles','Règles',`<ul>${SITE.regles.map(r=>`<li>${e(r)}</li>`).join('')}</ul>`);
+if(SITE.criteres?.length)add('criteres','Évaluation',`<div class="tags">${SITE.criteres.map(c=>`<span>${e(c)}</span>`).join('')}</div>`);
+if(SITE.ressources?.length)add('ressources','Ressources',SITE.ressources.map(r=>{const h=r.fichier||r.lien;return`<div class="card res"><a href="${e(h)}" ${r.fichier?'download':'target="_blank" rel="noopener"'}>${r.fichier?'📄':'🔗'} ${e(r.nom)}</a>${r.description?`<small>${e(r.description)}</small>`:''}</div>`}).join(''));
+if(SITE.faq?.length)add('faq','FAQ',SITE.faq.map(f=>`<div class="card"><details><summary>${e(f.q)}</summary><p>${e(f.r)}</p></details></div>`).join(''));
+$('nav').innerHTML=S.map(s=>`<a href="#${s.id}">${s.nom}</a>`).join('');
+$('main').innerHTML=S.map(s=>`<section id="${s.id}"><h2>${s.nom}</h2>${s.html}</section>`).join('');
+$('foot').innerHTML=SITE.contact?`Une question ? <a href="mailto:${e(SITE.contact)}">${e(SITE.contact)}</a>`:'';
+</script></body></html>

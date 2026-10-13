@@ -1,0 +1,2 @@
+Déposez ici vos fichiers ressources (PDF, jeux de données, images, archives...).
+Puis ajoutez une ligne correspondante dans la section "ressources" du fichier config.js.

@@ -1,0 +1,7 @@
+SITE DU HACKATHON
+
+Modifier le contenu : ouvrez config.js dans VS Code (titre, date, programme, règles, FAQ...).
+Ajouter une ressource : copiez le fichier dans le dossier "ressources", puis ajoutez une ligne dans config.js.
+Prévisualiser : ouvrez index.html dans le navigateur (ou extension "Live Server" de VS Code).
+Mettre en ligne : envoyez tout le dossier (index.html, config.js, ressources/) sur votre hébergement via FTP.
+Aucun PHP ni Node.js nécessaire : c'est un site 100 % statique.
